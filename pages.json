@@ -106,6 +106,20 @@
         "enablePullDownRefresh": false,
         "navigationBarTitleText": "实名认证"
     }
+},
+{
+	"path" : "pages/blog/edit",
+	"style" : 
+	{
+		"navigationBarTitleText" : "编辑"
+	}
+},
+{
+	"path" : "pages/blog/list",
+	"style" : 
+	{
+		"navigationBarTitleText" : "博客"
+	}
 }
 ],
 	"globalStyle": {
