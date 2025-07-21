@@ -1,4 +1,6 @@
 <script setup>
+const { detail = {} } = defineProps({ detail: Object })
+
 const onDelete = () => {
 	console.log('delete')
 }
@@ -10,20 +12,18 @@ const onDelete = () => {
 			<view class="blog-card-user-avatar">
 				<uni-icons type="contact-filled"></uni-icons>
 			</view>
-			<view class="blog-card-user-nickname">用户</view>
+			<view class="blog-card-user-nickname">{{ detail.user_id[0]?.nickname }}</view>
 		</view>
-		<view class="blog-card-content">
-			文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容
-		</view>
-		<view class="blog-card-images">
-			<view class="blog-card-images-item" v-for="item in 5">
-				<image class="image" src="/static/logo.png" mode="aspectFill"></image>
+		<view class="blog-card-content">{{ detail.content }}</view>
+		<view class="blog-card-images" v-if="detail.images.length">
+			<view class="blog-card-images-item" v-for="item in detail.images">
+				<image class="image" :src="item.url" mode="aspectFill"></image>
 			</view>
 		</view>
 		<view class="blog-card-info">
 			<view class="blog-card-info-date">
 				<uni-dateformat
-					date="2020/10/20 20:20:20"
+					:date="detail.publish_date"
 					format="MM月dd日 hh:mm"
 					:threshold="[60000, 3600000 * 24 * 30]"
 				></uni-dateformat>
@@ -41,7 +41,6 @@ const onDelete = () => {
 	margin-bottom: 30rpx;
 	padding: 30rpx;
 	width: 100%;
-	min-height: 300rpx;
 	height: fit-content;
 	background-color: #ffffff;
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);

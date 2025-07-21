@@ -1,17 +1,41 @@
 <script setup>
+import { onMounted, ref } from 'vue'
+import { onReachBottom } from '@dcloudio/uni-app'
 import BlogCard from '@/components/BlogCard.vue'
+const blogCloudObj = uniCloud.importObject('blogCloudObj')
 
 const goEdit = () => {
 	uni.navigateTo({
 		url: '/pages/blog/edit'
 	})
 }
+
+const blogList = ref([])
+const pageInfo = ref({
+	page: 1,
+	pageSize: 5,
+	disabled: false
+})
+const getBlogList = async () => {
+	if (pageInfo.value.disabled) return
+	const { data } = await blogCloudObj.list(pageInfo.value)
+	blogList.value = [...blogList.value, ...data]
+	if (data.length < pageInfo.value.pageSize) pageInfo.value.disabled = true
+}
+onMounted(() => {
+	getBlogList()
+})
+onReachBottom(() => {
+	if (pageInfo.value.disabled) return
+	pageInfo.value.page++
+	getBlogList()
+})
 </script>
 
 <template>
 	<view class="container">
 		<view class="blog-list">
-			<BlogCard v-for="item in 5"></BlogCard>
+			<BlogCard v-for="item in blogList" :key="item._id" :detail="item"></BlogCard>
 		</view>
 		<uni-fab
 			ref="fabRef"

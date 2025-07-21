@@ -1,13 +1,26 @@
 <script setup>
 import { ref } from 'vue'
+const blogCloudObj = uniCloud.importObject('blogCloudObj')
 
 const formData = ref({
 	content: '',
 	images: []
 })
 
-const onSubmit = () => {
-	console.log(formData.value)
+const onSubmit = async () => {
+	const params = {
+		...formData.value,
+		images: formData.value.images.map(({ name, extname, url } = _) => ({
+			name,
+			extname,
+			url
+		}))
+	}
+	await blogCloudObj.add(params)
+	uni.showToast({
+		title: '发布成功',
+		icon: 'none'
+	})
 }
 </script>
 
