@@ -1,8 +1,21 @@
 <script setup>
+import { deletePermisson } from '../utils/common'
 const { detail = {} } = defineProps({ detail: Object })
+const blogCloudObj = uniCloud.importObject('blogCloudObj')
 
-const onDelete = () => {
-	console.log('delete')
+const emit = defineEmits(['success'])
+const onRemove = async (id) => {
+	const { cancel } = await uni.showModal({
+		title: '温馨提示',
+		content: '是否确认删除该文章'
+	})
+	if (cancel) return
+	await blogCloudObj.remove(id)
+	uni.showToast({
+		title: '删除成功',
+		icon: 'none'
+	})
+	emit('success')
 }
 </script>
 
@@ -28,7 +41,11 @@ const onDelete = () => {
 					:threshold="[60000, 3600000 * 24 * 30]"
 				></uni-dateformat>
 			</view>
-			<view class="blog-card-info-delete" @click="onDelete">
+			<view
+				class="blog-card-info-delete"
+				v-if="deletePermisson(detail.user_id[0]?._id)"
+				@click="onRemove(detail._id)"
+			>
 				<uni-icons type="trash"></uni-icons>
 				删除
 			</view>
@@ -89,7 +106,8 @@ const onDelete = () => {
 		&-item {
 			overflow: hidden;
 			border-radius: 10rpx;
-			aspect-ratio: 1/1;
+			max-height: 400rpx;
+			aspect-ratio: 1 / 1;
 
 			.image {
 				width: 100%;

@@ -21,6 +21,11 @@ const onSubmit = async () => {
 		title: '发布成功',
 		icon: 'none'
 	})
+	setTimeout(() => {
+		uni.navigateTo({
+			url: '/pages/blog/list'
+		})
+	}, 2000)
 }
 </script>
 
@@ -64,5 +69,9 @@ const onSubmit = async () => {
 
 .image {
 	margin: 80rpx 0 30rpx;
+}
+
+:deep(.file-picker__box-content) {
+	background-color: #e5e5e5 !important;
 }
 </style>

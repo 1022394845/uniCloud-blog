@@ -16,6 +16,19 @@ module.exports = {
 	},
 
 	/**
+	 * 删除
+	 * @param {string} id 文章id
+	 * @returns {object} 删除文章响应
+	 */
+	async remove(id = {}) {
+		const dbJQL = uniCloud.databaseForJQL({
+			clientInfo: this.getClientInfo()
+		})
+
+		return await dbJQL.collection('blog').doc(id).remove()
+	},
+
+	/**
 	 * 获取文章列表
 	 * @param {object} pageInfo 分页配置
 	 * @returns {array} 文章列表

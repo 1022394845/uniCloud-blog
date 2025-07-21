@@ -30,12 +30,27 @@ onReachBottom(() => {
 	pageInfo.value.page++
 	getBlogList()
 })
+
+const successRemove = () => {
+	pageInfo.value = {
+		page: 1,
+		pageSize: 5,
+		disabled: false
+	}
+	blogList.value = []
+	getBlogList()
+}
 </script>
 
 <template>
 	<view class="container">
 		<view class="blog-list">
-			<BlogCard v-for="item in blogList" :key="item._id" :detail="item"></BlogCard>
+			<BlogCard
+				v-for="item in blogList"
+				:key="item._id"
+				:detail="item"
+				@success="successRemove"
+			></BlogCard>
 		</view>
 		<uni-fab
 			ref="fabRef"
