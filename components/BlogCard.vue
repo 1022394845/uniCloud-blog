@@ -17,6 +17,12 @@ const onRemove = async (id) => {
 	})
 	emit('success')
 }
+
+const onPreview = (url) => {
+	uni.previewImage({
+		urls: [url]
+	})
+}
 </script>
 
 <template>
@@ -29,7 +35,11 @@ const onRemove = async (id) => {
 		</view>
 		<view class="blog-card-content">{{ detail.content }}</view>
 		<view class="blog-card-images" v-if="detail.images.length">
-			<view class="blog-card-images-item" v-for="item in detail.images">
+			<view
+				class="blog-card-images-item"
+				v-for="item in detail.images"
+				@click="onPreview(item.url)"
+			>
 				<image class="image" :src="item.url" mode="aspectFill"></image>
 			</view>
 		</view>
