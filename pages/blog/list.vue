@@ -1,6 +1,6 @@
 <script setup>
 import { onMounted, ref } from 'vue'
-import { onReachBottom } from '@dcloudio/uni-app'
+import { onReachBottom, onPullDownRefresh } from '@dcloudio/uni-app'
 import BlogCard from '@/components/BlogCard.vue'
 const blogCloudObj = uniCloud.importObject('blogCloudObj')
 
@@ -31,7 +31,7 @@ onReachBottom(() => {
 	getBlogList()
 })
 
-const successRemove = () => {
+const resetList = () => {
 	pageInfo.value = {
 		page: 1,
 		pageSize: 5,
@@ -40,6 +40,11 @@ const successRemove = () => {
 	blogList.value = []
 	getBlogList()
 }
+
+onPullDownRefresh(async () => {
+	await resetList()
+	uni.stopPullDownRefresh()
+})
 </script>
 
 <template>
@@ -49,7 +54,7 @@ const successRemove = () => {
 				v-for="item in blogList"
 				:key="item._id"
 				:detail="item"
-				@success="successRemove"
+				@success="resetList"
 			></BlogCard>
 		</view>
 		<uni-fab
