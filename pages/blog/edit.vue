@@ -22,7 +22,7 @@ const onSubmit = async () => {
 		icon: 'none'
 	})
 	setTimeout(() => {
-		uni.navigateTo({
+		uni.redirectTo({
 			url: '/pages/blog/list'
 		})
 	}, 2000)
